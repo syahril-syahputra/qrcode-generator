@@ -41,14 +41,14 @@ export async function GET(req: NextRequest) {
 
         const number = searchParams.get("number"); // ambil parameter number
 
-        const whereClause: Prisma.couponWhereInput | undefined = number
+        const whereClause = number
             ? {
                   number: {
                       contains: number,
-                      mode: "insensitive" as Prisma.QueryMode, // casting dengan benar
                   },
               }
             : undefined;
+
         const data = await prisma.coupon.findMany({
             skip: offset,
             take: limit,
