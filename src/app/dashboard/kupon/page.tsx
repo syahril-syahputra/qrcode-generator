@@ -13,9 +13,12 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { InputCustom } from "@/components/ui/inputCustom";
 import { ListRestart } from "lucide-react";
+import { useQRCode } from "next-qrcode";
 
 export default function Page() {
     dayjs.extend(utc);
+
+    const { SVG } = useQRCode();
     const [titleSearch, settitleSearch] = useState("");
 
     const {
@@ -29,6 +32,7 @@ export default function Page() {
         setfilterValue,
         setfilter,
     } = useTableConfig<ICouponFilter>({
+        defaultComlumnType: "desc",
         defaultFilter: {
             number: "",
         },
@@ -61,6 +65,32 @@ export default function Page() {
                 </span>
             ),
             enableHiding: false,
+        }),
+
+        columnHelper.accessor("id", {
+            id: "id",
+            header: () => <span>Tanggal Input</span>,
+            cell: (info) => (
+                <SVG
+                    text={info.getValue()}
+                    options={{
+                        margin: 3,
+
+                        width: 50,
+                        color: {
+                            dark: "#000000",
+                            light: "#FFFFFF",
+                        },
+                    }}
+                />
+            ),
+            enableSorting: true,
+        }),
+        columnHelper.accessor("createdAt", {
+            id: "createdAt",
+            header: () => <span>Tanggal Input</span>,
+            cell: (info) => dayjs(info.getValue()).format("DD MMM YYYY HH:mm"),
+            enableSorting: true,
         }),
         columnHelper.accessor("number", {
             id: "number",

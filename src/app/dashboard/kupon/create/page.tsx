@@ -21,6 +21,7 @@ import { ICreateCoupon } from "@/types/coupon";
 import ErrorMessage from "@/components/Error/ErrorMessage";
 import DatePicker from "@/components/ui/datePicker";
 import MoneyInput from "@/components/ui/moneyInput";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     number: z.string().min(1, { message: "Nomor kupon tidak boleh kosong" }),
@@ -39,6 +40,7 @@ const formSchema = z.object({
 });
 
 export default function Page() {
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -67,8 +69,8 @@ export default function Page() {
         error,
         data: createResponse,
     } = useCreateCoupon({
-        onSuccess: () => {
-            alert("mantab");
+        onSuccess: (data) => {
+            router.push("/dashboard/kupon/" + data.data.id);
         },
         onError: (error) => errorHelper(form.setError, error),
     });

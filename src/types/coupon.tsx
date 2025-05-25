@@ -11,6 +11,7 @@ export interface IListCoupon {
     value: number;
     number: string;
     startDate: string | null;
+    createdAt: string;
     expiredDate: string | null;
 }
 export interface ICouponFilter {

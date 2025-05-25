@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 "use client";
 import TitleFormHeader from "@/components/Title/TitleFormHeader";
 import { Separator } from "@/components/ui/separator";
@@ -10,7 +11,7 @@ interface Props {
     id: string;
 }
 export default function DetailKuponClient({ id }: Props) {
-    const { Canvas } = useQRCode();
+    const { Image } = useQRCode();
 
     const { data, isError, isLoading, isSuccess } = useDetailCoupon(id);
     if (isLoading) {
@@ -26,7 +27,7 @@ export default function DetailKuponClient({ id }: Props) {
                     <TitleFormHeader>Detail Kupon</TitleFormHeader>
                 </div>
                 <div className="flex items-center justify-center">
-                    <Canvas
+                    <Image
                         text={id}
                         options={{
                             errorCorrectionLevel: "M",
