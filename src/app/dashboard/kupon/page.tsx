@@ -20,6 +20,7 @@ export default function Page() {
 
     const { SVG } = useQRCode();
     const [titleSearch, settitleSearch] = useState("");
+    const [customerSearch, setcustomerSearch] = useState("");
 
     const {
         filter,
@@ -35,6 +36,7 @@ export default function Page() {
         defaultComlumnType: "desc",
         defaultFilter: {
             number: "",
+            consumer: "",
         },
     });
     useEffect(() => {
@@ -166,6 +168,21 @@ export default function Page() {
                                 setfilterValue({
                                     ...filterValue,
                                     number: e.target.value,
+                                });
+                            }
+                        }}
+                    />
+                    <InputCustom
+                        className="w-full"
+                        placeholder="Masukan Nama Pelanggan"
+                        value={customerSearch}
+                        onChange={(e) => {
+                            const val: string = e.target.value;
+                            setcustomerSearch(val);
+                            if (e.target.value.length >= 1) {
+                                setfilterValue({
+                                    ...filterValue,
+                                    consumer: e.target.value,
                                 });
                             }
                         }}

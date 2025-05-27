@@ -38,15 +38,23 @@ export async function GET(req: NextRequest) {
         const sortType =
             searchParams.get("sort_type") === "asc" ? "asc" : "desc"; // default to desc
 
-        const number = searchParams.get("number"); // ambil parameter number
+        const number = searchParams.get("number");
+        const consumer = searchParams.get("consumer");
 
-        const whereClause = number
-            ? {
-                  number: {
-                      contains: number,
-                  },
-              }
-            : undefined;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const whereClause: any = {};
+
+        if (number) {
+            whereClause.number = {
+                contains: number,
+            };
+        }
+
+        if (consumer) {
+            whereClause.consumer = {
+                contains: consumer,
+            };
+        }
 
         const data = await prisma.coupon.findMany({
             skip: offset,
@@ -54,7 +62,8 @@ export async function GET(req: NextRequest) {
             orderBy: {
                 [sortBy]: sortType,
             },
-            where: whereClause,
+            where:
+                Object.keys(whereClause).length > 0 ? whereClause : undefined,
         });
 
         const totalData = await prisma.coupon.count();

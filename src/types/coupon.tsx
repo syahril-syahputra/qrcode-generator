@@ -17,6 +17,7 @@ export interface IListCoupon {
 }
 export interface ICouponFilter {
     number: string;
+    consumer: string;
 }
 export interface ICoupon {
     id: string;
