@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*", // atau ganti dengan domain spesifik
-    "Access-Control-Allow-Methods": "GET, DELETE, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, DELETE, OPTIONS, PATCH",
     "Access-Control-Allow-Headers": "Content-Type",
 };
 
