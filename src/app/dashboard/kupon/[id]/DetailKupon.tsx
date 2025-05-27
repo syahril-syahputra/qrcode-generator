@@ -104,6 +104,49 @@ export default function DetailKuponClient({ id }: Props) {
                     <Separator />
                     <DeleteCoupon id={id} />
                 </div>
+                <div
+                    id="coupon-pdf"
+                    className="bg-white p-6 border w-[700px] mx-auto shadow-md text-sm"
+                >
+                    <div className="text-center font-bold text-lg mb-2">
+                        SPBU.7494510
+                    </div>
+                    <div className="text-center mb-1">Jl. Usman Binol No.1</div>
+                    <div className="text-2xl font-bold text-yellow-500">
+                        KUPON Pertamax
+                    </div>
+                    <div className="text-blue-600 text-xl font-bold mb-2">
+                        RP. {formatRupiah(data?.value).replace("Rp", "").trim()}
+                    </div>
+                    <ul className="text-xs list-disc pl-4 space-y-1 mb-2">
+                        <li>Kupon ini tidak dapat diuangkan</li>
+                        <li>
+                            Kupon ini sah bila dibubuhi tanda tangan dan stempel
+                        </li>
+                        <li>
+                            Bila ada perubahan harga BBM dari Pertamina kupon
+                            ini tidak berlaku
+                        </li>
+                        <li>Kupon ini berlaku selama 3 bulan</li>
+                    </ul>
+                    <div className="text-red-600 text-xs font-bold">
+                        Masa berlaku:{" "}
+                        {dayjs(data?.startDate).format("DD MMM YYYY")} s/d{" "}
+                        {dayjs(data?.expiredDate).format("DD MMM YYYY")}
+                    </div>
+                    <div className="flex justify-between text-xs mt-4">
+                        <div>
+                            Konsumen:{" "}
+                            <span className="font-bold">{data?.consumer}</span>
+                        </div>
+                        <div>
+                            Tolitoli,{" "}
+                            {dayjs(data?.createdAt).format("DD MMM YYYY")}
+                            <br />
+                            <span className="italic">Hormat kami</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

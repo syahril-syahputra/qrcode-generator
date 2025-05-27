@@ -15,9 +15,6 @@ import { InputCustom } from "@/components/ui/inputCustom";
 import { ListRestart } from "lucide-react";
 import { useQRCode } from "next-qrcode";
 
-import * as XLSX from "xlsx";
-import { useFetchExcelCoupon } from "@/fetures/useFetchExcelCoupont";
-
 export default function Page() {
     dayjs.extend(utc);
 
@@ -57,8 +54,6 @@ export default function Page() {
         filter,
         sort
     );
-    const { data: dataExcel } = useFetchExcelCoupon(pagination, filter, sort);
-
     const columnHelper = createColumnHelper<IListCoupon>();
     const columns = [
         columnHelper.display({
@@ -158,77 +153,6 @@ export default function Page() {
             enableHiding: false,
         }),
     ];
-
-    const [loading, setLoading] = useState(false);
-
-    const onGetExporProduct = async (
-        title?: string,
-        worksheetname?: string
-    ) => {
-        try {
-            setLoading(true);
-
-            // Check if the action result contains data and if it's an array
-
-            if (!dataExcel?.data) {
-                console.error("No data to export");
-                return;
-            }
-            const dataToExport =
-                dataExcel?.data?.map((pro) => ({
-                    createdAt: dayjs(pro.createdAt).format("DD MMM YYYY HH:mm"),
-                    number: pro.number,
-                    consumer: pro.consumer,
-                    value: pro.value,
-                    startDate: pro.startDate
-                        ? dayjs(pro.startDate).format("DD MMM YYYY HH:mm")
-                        : "",
-                    expiredDate: pro.expiredDate
-                        ? dayjs(pro.expiredDate).format("DD MMM YYYY HH:mm")
-                        : "",
-                    useDate: pro.useDate
-                        ? dayjs(pro.useDate).format("DD MMM YYYY HH:mm")
-                        : "-",
-                })) ?? [];
-            // Create Excel workbook and worksheet
-            const workbook = XLSX.utils.book_new();
-
-            const worksheet = XLSX.utils.aoa_to_sheet([]);
-
-            // Tambahkan header manual (capitalize)
-            XLSX.utils.sheet_add_aoa(
-                worksheet,
-                [
-                    [
-                        "Tanggal Input",
-                        "Nomor Seri",
-                        "Nama Pelanggan",
-                        "Jumlah",
-                        "Tanggal Mulai",
-                        "Tanggal Expired",
-                        "Tanggal Pakai",
-                    ],
-                ],
-                { origin: "A1" }
-            );
-
-            XLSX.utils.sheet_add_json(worksheet, dataToExport, {
-                skipHeader: true,
-                origin: "A2",
-            });
-            XLSX.utils.book_append_sheet(workbook, worksheet, worksheetname);
-            XLSX.writeFile(workbook, `${title}.xlsx`);
-
-            console.log(`Exported data to ${title}.xlsx`);
-            setLoading(false);
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            setLoading(false);
-            console.log("#==================Export Error", error.message);
-        }
-    };
-
     return (
         <div>
             <div className="flex flex-1 items-center bg-secondary mt-8 p-4 rounded-lg">
@@ -274,17 +198,7 @@ export default function Page() {
                     </div>
                 </div>
             </div>
-
             <div className="my-5 space-y-4">
-                <Button
-                    loading={loading}
-                    variant={"secondary"}
-                    onClick={() =>
-                        onGetExporProduct("Product", "ProductExport")
-                    }
-                >
-                    EXPORT DATA EXCEL
-                </Button>
                 <DataTable
                     columns={columns}
                     data={data?.data}
