@@ -69,3 +69,33 @@ export async function DELETE(req: NextRequest) {
         );
     }
 }
+
+export async function PATCH(req: NextRequest) {
+    const id = req.nextUrl.pathname.split("/").pop();
+
+    if (!id) {
+        return NextResponse.json(
+            { error: "ID tidak valid" },
+            { status: 400, headers: corsHeaders }
+        );
+    }
+
+    try {
+        const updatedCoupon = await prisma.coupon.update({
+            where: { id },
+            data: {
+                useDate: new Date(), // set waktu saat ini
+            },
+        });
+
+        return NextResponse.json(updatedCoupon, {
+            status: 200,
+            headers: corsHeaders,
+        });
+    } catch (error: unknown) {
+        return NextResponse.json(
+            { error: "Terjadi kesalahan: " + error },
+            { status: 400, headers: corsHeaders }
+        );
+    }
+}

@@ -81,6 +81,25 @@ export default function DetailKuponClient({ id }: Props) {
                         </label>
                         <span>{formatRupiah(data?.value)}</span>
                     </div>
+                    <Separator />
+                    <div className="flex flex-col space-y-2">
+                        <label className="text-xl font-semibold">
+                            Status Pakai
+                        </label>
+                        <div>
+                            {data?.useDate ? (
+                                <a className="text-red-500">
+                                    {dayjs
+                                        .utc(data?.useDate)
+                                        .format("DD MMM YYYY")}
+                                </a>
+                            ) : (
+                                <a className="text-green-600">
+                                    Belum Di Gunakan
+                                </a>
+                            )}
+                        </div>
+                    </div>
 
                     <Separator />
                     <DeleteCoupon id={id} />

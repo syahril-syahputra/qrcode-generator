@@ -122,6 +122,22 @@ export default function Page() {
             cell: (info) => dayjs.utc(info.getValue()).format("DD MMM YYYY"),
             enableSorting: true,
         }),
+        columnHelper.accessor("useDate", {
+            id: "useDate",
+            header: () => <span>Tanggal Pakai</span>,
+            cell: (info) => (
+                <div>
+                    {info.getValue() ? (
+                        <a className="text-red-500">
+                            {dayjs.utc(info.getValue()).format("DD MMM YYYY")}
+                        </a>
+                    ) : (
+                        <a className="text-green-600">Belum Di Gunakan</a>
+                    )}
+                </div>
+            ),
+            enableSorting: true,
+        }),
 
         columnHelper.display({
             id: "actions",

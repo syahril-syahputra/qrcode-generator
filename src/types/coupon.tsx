@@ -13,6 +13,7 @@ export interface IListCoupon {
     startDate: string | null;
     createdAt: string;
     expiredDate: string | null;
+    useDate: string | null;
 }
 export interface ICouponFilter {
     number: string;
@@ -26,4 +27,5 @@ export interface ICoupon {
     startDate: string; // atau: Date
     expiredDate: string; // atau: Date
     value: number;
+    useDate: string | null;
 }
